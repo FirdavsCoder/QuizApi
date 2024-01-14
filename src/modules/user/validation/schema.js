@@ -23,9 +23,11 @@ const userGetByIdSchema = Joi.object({
 
 
 const userUpdateSchema = Joi.object({
-    fullName: Joi.string().required().min(3).max(100),
-    role: Joi.string().required().min(4).max(5),
+    login: Joi.string().required().min(5).max(100),
+    password: Joi.string().required(),
+    full_name: Joi.string().required().min(5).max(100),
     birthdate: Joi.date().required(),
+    role: Joi.string().required(),
     file_id: Joi.number().required()
 })
 

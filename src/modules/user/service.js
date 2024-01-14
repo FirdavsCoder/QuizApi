@@ -40,14 +40,12 @@ class UserService {
     // GET USER BY LOGIN
     async getUserByLogin(login) {
         const foundUser = await this.#repository.findOneByLogin(login)
-        console.log("foundUser: ",foundUser)
         let resData;
         if (foundUser) {
             resData = new ResData("foun user by login", 200, foundUser);
         } else {
             resData = new ResData("not found", 404, null);
         }
-        console.log("resData: ", resData)
         return resData;
     }
 
@@ -93,7 +91,8 @@ class UserService {
     // Update User By Id
     async updateUser(id, dto) {
         const { data: foundUserById } = await this.getUserById(id)
-        const updatedUser = await this.#repository.update(foundUserById)
+        dto.id = id
+        const updatedUser = await this.#repository.update(dto)
         const resData = new ResData(
             "Updated successfully!",
             200,
