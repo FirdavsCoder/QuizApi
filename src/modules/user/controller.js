@@ -13,15 +13,12 @@ class UserController {
     // User Register
     async register_user(req, res) {
         try {
-            console.log(1)
             const dto = req.body;
             dto.role = "user"
             const validated = userRegisterSchema.validate(dto);
             if (validated.error) {
                 throw new UserBadRequestException(validated.error.message);
             }
-            console.log(2)
-            console.log("ishlayapti.. controller")
             const resData = await this.#userService.create(dto);
             res.set("token", resData.data.token)
             return res.status(resData.statusCode).json(resData);
@@ -46,7 +43,6 @@ class UserController {
                 throw new UserBadRequestException(validated.error.message);
             }
             const resData = await this.#userService.create(dto);
-            console.log(resData.data.token)
             res.set("token", resData.data.token)
             return res.status(resData.statusCode).json(resData);
         } catch (error) {
