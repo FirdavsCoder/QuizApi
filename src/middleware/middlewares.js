@@ -11,9 +11,7 @@ const userService = new UserService();
 class AuthorizationMiddleware {
     async authorization(req, res, next) {
         const userId = req.userId;
-
         const userRepo = new UserRepository()
-
         const foundUser = await userRepo.findOneById(userId);
         console.log(foundUser)
         if (foundUser && foundUser.role) {
@@ -55,7 +53,6 @@ class AuthorizationMiddleware {
             req.userId = Number(userId);
             next();
         } catch (error) {
-            console.log("error :", error);
             const resData = new ResData("invalid token");
             res.status(401).json(resData);
         }

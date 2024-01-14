@@ -3,6 +3,8 @@ const cors = require( "cors")
 const modules = require( "./modules/app.module.js")
 const config = require( "./config/config")
 // const { FileService } = require( "./modules/file/file.service.js")
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./lib/swagger'); // O'rganilgan swagger.js fayli
 
 
 const app = express()
@@ -19,6 +21,7 @@ app.use("/api", modules.router);
 //     console.log(req.file);
 //     fileService.create(req.file)
 // })
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 
