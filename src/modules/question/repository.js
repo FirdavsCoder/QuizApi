@@ -20,17 +20,17 @@ class QuestionRepository extends Postgres {
     }
 
     async create(dto) {
-        const SQL = "INSERT INTO questions(title) VALUES ($1)"
+        const SQL = "INSERT INTO questions(title) VALUES ($1) RETURNING * "
         return await this.fetch(SQL, dto.title)
     }
 
     async update(dto) {
-        const SQL = "UPDATE questions SET title = $2 WHERE id=$1"
+        const SQL = "UPDATE questions SET title = $2 WHERE id=$1 RETURNING * "
         return await this.fetch(SQL, dto.id, dto.title)
     }
 
     async delete(id) {
-        const SQL = "DELETE FROM questions WHERE id = $1"
+        const SQL = "DELETE FROM questions WHERE id = $1 RETURNING *"
         return await this.fetch(SQL, id)
     }
 
