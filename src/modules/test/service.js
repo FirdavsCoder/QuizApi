@@ -12,10 +12,10 @@ class TestService {
 
     // CREATE test
     async create(data){
-        const foundTestByLogin= await this.#repository.find(data.login);
-        if (foundTestByLogin) {
-            throw new TestBadRequestException("A test with this name already exists");
-        }
+        // const foundTestByLogin= await this.#repository.find(data.login);
+        // if (foundTestByLogin) {
+        //     throw new TestBadRequestException("A test with this name already exists");
+        // }
 
         const newTest = new TestEntity(data)
         await this.#repository.insert(newTest)

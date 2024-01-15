@@ -92,7 +92,7 @@ class TestController {
     async deleteTestById(req, res) {
         try {
             const id = req.params.id
-            const validated = testCreateSchema.validate(req.params)
+            const validated = testGetByIdSchema.validate(req.params)
             if (validated.error) {
                 throw new TestBadRequestException(validated.error.message)
             }

@@ -44,9 +44,6 @@ const userController = new UserController(userService);
  *           description: The user file_id
  *
  */
-
-
-
 /**
  * @swagger
  * tags:
