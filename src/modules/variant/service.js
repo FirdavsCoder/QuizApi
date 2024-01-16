@@ -1,5 +1,5 @@
 const {VariantEntity} = require("./entity/entity");
-const {VariantBadRequestException, VariantNotFoundException} = require("./exception/exception");
+const {VariantNotFoundException} = require("./exception/exception");
 const {ResData} = require("../../lib/resData");
 const {VariantRepository} = require("./repository");
 
