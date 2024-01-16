@@ -12,14 +12,6 @@ class UserPassedTestService {
 
     async create(data) {
         const newUserPassedTest = new UserPassedTestsEntity(data)
-        const testData = await this.#repository.check_test(newUserPassedTest.test_id)
-        if (!testData) {
-            return new ResData(
-                "Question not found with the id",
-                400,
-                null
-            )
-        }
         const userData = await this.#repository.check_user(newUserPassedTest.user_id)
         if (!userData) {
             return new ResData(
@@ -27,6 +19,14 @@ class UserPassedTestService {
                 400,
                 null
             );
+        }
+        const testData = await this.#repository.check_test(newUserPassedTest.test_id)
+        if (!testData) {
+            return new ResData(
+                "Test not found with the id",
+                400,
+                null
+            )
         }
         await this.#repository.create(newUserPassedTest)
         return new ResData(
@@ -54,6 +54,23 @@ class UserPassedTestService {
     async updateUserPassedTestById(id, dto) {
         await this.getUserPassedTestById(id)
         dto.id = id
+        const newUserPassedTest = new UserPassedTestsEntity(dto)
+        const userData = await this.#repository.check_user(newUserPassedTest.user_id)
+        if (!userData) {
+            return new ResData(
+                "User not found with the id",
+                400,
+                null
+            );
+        }
+        const testData = await this.#repository.check_test(newUserPassedTest.test_id)
+        if (!testData) {
+            return new ResData(
+                "Test not found with the id",
+                400,
+                null
+            )
+        }
         const updatedPassedTest = await this.#repository.update(dto)
         return new ResData(
             "Updated successfully!",

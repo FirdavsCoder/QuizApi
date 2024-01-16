@@ -18,6 +18,8 @@ const UserPassedTestGetByUserIdSchema = Joi.object({
 })
 
 
+
+
 module.exports = {
     UserPassedTestCreateSchema,
     UserPassedTestGetByUserIdSchema,
