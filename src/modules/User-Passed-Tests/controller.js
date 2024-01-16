@@ -18,7 +18,7 @@ class UserPassedTestController {
             const dto = req.body
             const validated = UserPassedTestCreateSchema.validate(dto)
             if (validated.error) {
-                throw UserPassedTestBadRequestException(validated.error.message)
+                throw new UserPassedTestBadRequestException(validated.error.message)
             }
             const resData = await this.#service.create(dto);
             return res.status(resData.statusCode).json(resData);
@@ -53,7 +53,7 @@ class UserPassedTestController {
     async getById(req, res) {
         try {
             const dto = req.params.id
-            const validated = UserPassedTestGetByIdSchema.validate(dto)
+            const validated = UserPassedTestGetByIdSchema.validate(req.params)
             if (validated.error) {
                 throw new UserPassedTestBadRequestException(validated.error.message)
             }
@@ -75,7 +75,7 @@ class UserPassedTestController {
     async getByUserId(req, res) {
         try {
             const dto = req.params.userId
-            const validated = UserPassedTestGetByIdSchema.validate(dto)
+            const validated = UserPassedTestGetByIdSchema.validate(req.params)
             if (validated.error) {
                 throw new UserPassedTestBadRequestException(validated.error.message)
             }
@@ -97,11 +97,17 @@ class UserPassedTestController {
     async updateById(req, res) {
         try {
             const dto = req.params.id
-            const validated = UserPassedTestGetByIdSchema.validate(dto)
+            const data = req.body
+            const validated = UserPassedTestGetByIdSchema.validate(req.params)
             if (validated.error) {
-                throw UserPassedTestBadRequestException(validated.error.message)
+                throw new UserPassedTestBadRequestException(validated.error.message)
             }
-            const resData = await this.#service.updateUserPassedTestById(dto)
+            const validatedData = UserPassedTestCreateSchema.validate(data)
+            if (validatedData.error) {
+                throw new UserPassedTestBadRequestException(validated.error.message)
+            }
+            data.id = Number(dto)
+            const resData = await this.#service.updateUserPassedTestById(dto, data)
             return res.status(resData.statusCode).json(resData)
 
         }
@@ -119,9 +125,9 @@ class UserPassedTestController {
     async deleteById(req, res) {
         try {
             const dto = req.params.id
-            const validated = UserPassedTestGetByIdSchema.validate(dto)
+            const validated = UserPassedTestGetByIdSchema.validate(req.params)
             if (validated.error) {
-                throw UserPassedTestBadRequestException(validated.error.message)
+                throw new UserPassedTestBadRequestException(validated.error.message)
             }
             const resData =  await this.#service.deleteById(dto)
             return res.status(resData.statusCode).json(resData)
@@ -140,9 +146,9 @@ class UserPassedTestController {
     async deleteByUserId(req, res) {
         try {
             const dto = req.params.userId
-            const validated = UserPassedTestGetByUserIdSchema.validate(dto)
+            const validated = UserPassedTestGetByUserIdSchema.validate(req.params)
             if (validated.error) {
-                throw UserPassedTestBadRequestException(validated.error.message)
+                throw new UserPassedTestBadRequestException(validated.error.message)
             }
             const resData =  await this.#service.deleteByUserId(dto)
             return res.status(resData.statusCode).json(resData)

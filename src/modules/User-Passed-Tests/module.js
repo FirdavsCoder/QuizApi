@@ -28,7 +28,7 @@ userPassedTestRouter.put("/update/:id", (req, res) => {
     userPassedTestController.updateById(req, res)
 })
 
-userPassedTestRouter.delete("/id", (req, res) => {
+userPassedTestRouter.delete("/:id", (req, res) => {
     userPassedTestController.deleteById(req, res)
 })
 
