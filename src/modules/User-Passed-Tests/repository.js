@@ -2,11 +2,11 @@ const { Postgres } = require("../../lib/pg")
 
 class UserPassedTestRepository extends Postgres {
     async findAll() {
-        return await this.fetchAll("SELECT * FROM user_passed_test_findall_view")
+        return await this.fetchAll("SELECT * FROM quizapi.user_passed_test_findall_view")
     }
 
     async findById(id) {
-        return await this.fetch("SELECT * FROM user_passed_test_findall_view WHERE id = $1", id)
+        return await this.fetch("SELECT * FROM quizapi.user_passed_test_findall_view WHERE id = $1", id)
     }
 
     async findByUserId(user_id) {
@@ -18,10 +18,10 @@ class UserPassedTestRepository extends Postgres {
                                 row_to_json(f.*)) AS users,
             row_to_json(t.*) as test, 
             upt.total_questions, upt.passed_questions, upt.created_at
-        FROM user_passed_tests upt 
-        INNER JOIN users u ON upt.user_id = u.id 
-        INNER JOIN tests t ON upt.test_id = t.id 
-        INNER JOIN files f ON f.id = u.file_id
+        FROM quizapi.user_passed_tests upt 
+        INNER JOIN quizapi.users u ON upt.user_id = u.id 
+        INNER JOIN quizapi.tests t ON upt.test_id = t.id 
+        INNER JOIN quizapi.files f ON f.id = u.file_id
         WHERE upt.user_id = $1
         `
         return await this.fetch(SQL, user_id)
@@ -29,7 +29,7 @@ class UserPassedTestRepository extends Postgres {
 
     async create(data) {
         const SQL = `
-        INSERT INTO user_passed_tests(user_id, test_id, total_questions, passed_questions)
+        INSERT INTO quizapi.user_passed_tests(user_id, test_id, total_questions, passed_questions)
         VALUES ($1, $2, $3, $4)
         `
 
@@ -38,21 +38,21 @@ class UserPassedTestRepository extends Postgres {
 
     async delete(id) {
         const SQL = `
-        DELETE FROM user_passed_tests WHERE id = $1
+        DELETE FROM quizapi.user_passed_tests WHERE id = $1
         `
         return await this.fetch(SQL, id)
     }
 
     async deleteByUserId(user_id) {
         const SQL = `
-        DELETE FROM user_passed_tests WHERE user_id = $1
+        DELETE FROM quizapi.user_passed_tests WHERE user_id = $1
         `
         return await this.fetch(SQL, user_id)
     }
 
     async update(data) {
         const SQL = `
-        UPDATE user_passed_tests SET user_id = $2, test_id=$3 
+        UPDATE quizapi.user_passed_tests SET user_id = $2, test_id=$3 
         WHERE id = $1
         `
 
@@ -61,14 +61,14 @@ class UserPassedTestRepository extends Postgres {
 
     async check_test(id) {
         const SQL = `
-        SELECT * FROM tests WHERE id=$1
+        SELECT * FROM quizapi.tests WHERE id=$1
         `
         return await this.fetch(SQL, id)
     }
 
     async check_user(id) {
         const SQL = `
-        SELECT * FROM users WHERE id=$1
+        SELECT * FROM quizapi.users WHERE id=$1
         `
         return await this.fetch(SQL, id)
     }
