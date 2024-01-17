@@ -2,16 +2,12 @@ const {Postgres} = require("../../lib/pg")
 
 class UserRepository extends Postgres{
     async findOneByLogin (login) {
-        const data = await this.fetch("SELECT * FROM users WHERE login=$1", login)
-        return data
+        return await this.fetch("SELECT * FROM quizapi.users WHERE login=$1", login)
     }
 
     async findOneById (id) {
         const SQL = `
-            SELECT u.id, u.login, u.password, u.full_name, u.birthdate, u.role, row_to_json(f) AS file
-            FROM users u  
-            LEFT JOIN files f ON u.file_id = f.id
-            WHERE u.id=$1;
+            SELECT * from quizapi.user_select WHERE id=$1;
         `
         return await this.fetch(SQL, id)
     }

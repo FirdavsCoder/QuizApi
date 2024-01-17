@@ -2,11 +2,7 @@ const {Postgres} = require("../../lib/pg")
 
 class VariantRepository extends Postgres {
     async findAll() {
-        const SQL = `
-            SELECT v.id, v.title, v.description, v.is_correct, row_to_json(q) AS question
-            FROM variants v  left join  questions q ON q.id = v.question_id
-        `
-        return await this.fetchAll(SQL)
+        return await this.fetchAll("SELECT * FROM variant_findall_view")
     }
 
     async check_question(id) {
@@ -17,11 +13,7 @@ class VariantRepository extends Postgres {
     }
 
     async findById(id) {
-        const SQL = `
-        SELECT v.id, v.title, v.description, v.is_correct, row_to_json(q) AS question
-        FROM variants v  left join  questions q ON q.id = v.question_id  WHERE v.id = $1
-        `
-        return await this.fetch(SQL, id)
+        return await this.fetch("SELECT * FROM variant_findall_view WHERE id = $1", id)
     }
 
     async create(data) {

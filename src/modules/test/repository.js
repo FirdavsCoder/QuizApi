@@ -9,7 +9,7 @@ class TestRepository extends Postgres {
                FROM questions q LEFT JOIN test_questions tq ON q.id = tq.question_id) AS questions
         FROM tests t
         `
-        return await this.fetchAll(SQL)
+        return await this.fetchAll("SELECT * FROM test_findall_view")
     }
 
     async insert(data) {
