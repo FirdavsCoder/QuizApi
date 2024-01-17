@@ -2,36 +2,11 @@ const { Postgres } = require("../../lib/pg")
 
 class UserPassedTestRepository extends Postgres {
     async findAll() {
-        const SQL = `
-        SELECT 
-            upt.id, 
-            jsonb_build_object('id', u.id, 'login', u.login, 'password', u.password, 'full_name', u.full_name, 
-                                'birthdate', u.birthdate, 'role', u.role, 'file', 
-                                row_to_json(f.*)) AS users,row_to_json(t.*) as variants, 
-                                upt.total_questions, upt.passed_questions, upt.created_at
-        FROM user_passed_tests upt 
-        INNER JOIN users u ON upt.user_id = u.id 
-        INNER JOIN tests t ON upt.test_id = t.id 
-        INNER JOIN files f ON f.id = u.file_id;
-        `
-        return await this.fetchAll(SQL)
+        return await this.fetchAll("SELECT * FROM user_passed_test_findall_view")
     }
 
     async findById(id) {
-        const SQL = `
-        SELECT 
-            upt.id, 
-            jsonb_build_object('id', u.id, 'login', u.login, 'password', u.password, 'full_name', u.full_name, 
-                                'birthdate', u.birthdate, 'role', u.role, 'file', 
-                                row_to_json(f.*)) AS users,row_to_json(t.*) as variants, 
-                                upt.total_questions, upt.passed_questions, upt.created_at
-        FROM user_passed_tests upt 
-        INNER JOIN users u ON upt.user_id = u.id 
-        INNER JOIN tests t ON upt.test_id = t.id 
-        INNER JOIN files f ON f.id = u.file_id
-        WHERE upt.id = $1
-        `
-        return await this.fetch(SQL, id)
+        return await this.fetch("SELECT * FROM user_passed_test_findall_view WHERE id = $1", id)
     }
 
     async findByUserId(user_id) {

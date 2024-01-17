@@ -2,21 +2,11 @@ const { Postgres } = require("../../lib/pg")
 
 class QuestionRepository extends Postgres {
     async findAll() {
-        const SQL = `
-        SELECT q.*, json_agg(row_to_json(v)) AS variants
-        FROM questions q  INNER JOIN variants v ON q.id = v.question_id
-        group by q.id
-        `
-        return await this.fetchAll(SQL)
+        return await this.fetchAll("SELECT * FROM question_findall_view")
     }
 
     async findById(id) {
-        const SQL = `
-        SELECT q.*, json_agg(row_to_json(v)) AS variants
-        FROM questions q  INNER JOIN variants v ON q.id = v.question_id WHERE q.id = $1
-        group by q.id
-        `
-        return await this.fetch(SQL, id)
+        return await this.fetch("SELECT * FROM question_findall_view WHERE id = $1", id)
     }
 
     async create(dto) {
